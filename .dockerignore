@@ -1,0 +1,8 @@
+node_modules
+
+.env.example
+.gitignore
+.prettierrc.json
+Dockerfile
+LICENSE
+README.md
