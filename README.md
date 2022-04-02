@@ -1,18 +1,21 @@
-
-# Risecorejs - Template
+# Risecorejs - The Node.js Framework
 
 ## Setup
 
 ```sh
-npm install && npm install -g nodemon
+npm install -g @risecorejs/core
+npm install -g nodemon
+npm install
+```
 
+> Note: Don't forget to set up your database for the next step!
+
+```sh
 npx sequelize db:migrate
 npx sequelize db:seed:all
 ```
 
 Copy ".env.example" -> ".env" and add your private key to JWT_SECRET_KEY etc.
-
-> Note: Don't forget to set up your database for the next step!
 
 `npm run dev` or `npm run start`
 
@@ -24,10 +27,10 @@ Copy ".env.example" -> ".env" and add your private key to JWT_SECRET_KEY etc.
   - models
   - seeders
 - docs
-- helpers
 - middleware
 - routes
 - storage
+- structs
 
 ## Config.js
 
@@ -37,39 +40,44 @@ module.exports = {
     test: 123
   },
   server: {
+    host: 'localhost', // default
+    port: 5000, // default
     multiProcessing: false, // default
-    port: process.env.PORT ?? 5000 // default
+    multiProcessingWorkers: null, // default
   },
   // Add your module aliases so they are always at hand
   moduleAlias: {
     '@some-folder': __dirname + '/directory/some-folder'
+  },
+  validator: {
+    locale: 'en' // default
+  },
+  router: {
+    baseUrl: '/', // default
+    routesPath: '/routes', // default
+    apiDocs: {
+      title: 'API-docs' // default
+    }
   },
   middleware: {
     rateLimit: {
       windowMs: 5 * 60 * 1000, // default
       max: 1000 // default
     },
-    cors: {}, // default
-    validator: {
-      locale: 'en' // default: en || ru
-    },
-    router: {
-      baseUrl: '/', // default
-      routesPath: '/routes', // default
-      apiDocs: {
-        title: 'API-docs' // default
-      }
-    },
+    cors: {}, // https://www.npmjs.com/package/cors#configuring-cors
     // Add your global middleware
-    extend: () => [require('@middleware/global/some'), ...]
-  },
-  master(config) {
-    console.log('I am working in the wizard when multiprocessing is running')
+    extend: () => [
+      require('~/middleware/global/some-middleware'),
+      // require('../middleware/global/some-middleware')
+    ]
   },
   init(config) {
     // Will be executed before launching the application
 
     console.log('Hi, I am an initialization function')
+  },
+  master(config) {
+    console.log('I am working in the wizard when multiprocessing is running')
   },
   start({ config, app, server }) {
     // Will be executed when the application starts

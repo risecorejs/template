@@ -1,4 +1,4 @@
-const docs = require('@docs/me')
+const docs = require('../docs/me')
 
 const endpoint = $controller('me')
 

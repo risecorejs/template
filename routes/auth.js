@@ -1,4 +1,4 @@
-const docs = require('@docs/auth')
+const docs = require('../docs/auth')
 
 const endpoint = $controller('auth')
 
