@@ -1,39 +1,58 @@
-const { User } = require('@risecorejs/core/models')
+const models = require('@risecorejs/core/models')
+
+const endpoints = $crudBuilder({
+  model: 'User',
+  endpoints: {
+    show,
+    update
+  }
+})
+
+module.exports = endpoints
 
 // SHOW
-exports.show = async (req, res) => {
-  const user = await User.findOne({
-    where: { id: req.me.id },
-    attributes: { exclude: 'password' }
-  })
-
-  return res.json({ user })
+function show() {
+  return {
+    model: models.User.scope('withoutPassword'),
+    key: false,
+    queryBuilder(req) {
+      return {
+        where: {
+          id: req.me.id
+        }
+      }
+    },
+    response(user) {
+      return { user }
+    }
+  }
 }
 
 // UPDATE
-exports.update = async (req, res) => {
-  const user = await User.findOne({
-    where: { id: req.me.id },
-    attributes: { exclude: 'password' }
-  })
+function update() {
+  return {
+    key: false,
+    queryBuilder(req) {
+      return {
+        where: {
+          id: req.me.id
+        }
+      }
+    },
+    rules({ instance: user }) {
+      return {
+        email: `ifExists|if:email!=="${user.email}"|required|email|max:200|unique:user`,
+        password: 'ifExists|required|string|between:8-200',
+        passwordConfirm: 'ifExists:password|required|as:password'
+      }
+    },
+    fields: ['email', 'password'],
+    response({ instance }) {
+      const user = instance.toJSON()
 
-  const errors = await req.validator({
-    email: 'ifExists|required|email|unique:user',
-    password: 'ifExists|required|string|min:8',
-    passwordConfirm: 'ifExists:password|as:password'
-  })
+      delete user.password
 
-  if (errors) {
-    return res.status(400).json({ errors })
+      return { user }
+    }
   }
-
-  const fields = req.only('email', 'password')
-
-  if (fields) {
-  await user.update(fields)
-
-  }
-
-
-  return res.end()
 }

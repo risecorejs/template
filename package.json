@@ -23,11 +23,9 @@
   "dependencies": {
     "@risecorejs/core": "^2.2.0",
     "@risecorejs/helpers": "^1.0.1",
-    "@risecorejs/redis": "^1.0.0",
+    "@risecorejs/middleware": "^1.0.0",
     "bcryptjs": "^2.4.3",
-    "date-fns": "^2.23.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.21",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.6.5",

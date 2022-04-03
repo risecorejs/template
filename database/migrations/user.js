@@ -1,34 +1,44 @@
 module.exports = {
-  async up (queryInterface, { INTEGER, STRING, DATE,  }) {
+  async up(queryInterface, { DataTypes }) {
     await queryInterface.createTable('user', {
       id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
-        type: INTEGER
+        primaryKey: true
+      },
+
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'default'
       },
 
       email: {
-        type: STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true
       },
+
       password: {
-        type: STRING,
+        type: DataTypes.STRING,
         allowNull: false
       },
 
       createdAt: {
-        allowNull: false,
-        type: DATE
+        type: DataTypes.DATE,
+        allowNull: false
       },
       updatedAt: {
-        allowNull: false,
-        type: DATE
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      deletedAt: {
+        type: DataTypes.DATE
       }
     })
   },
-  async down  (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('user')
   }
 }

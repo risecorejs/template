@@ -6,7 +6,7 @@ exports.signUp = {
     email: {
       type: 'string',
       required: true,
-      value: 'user@domain.zone',
+      value: 'newuser@example.com',
       description: 'Email must be unique'
     },
     password: {
@@ -32,7 +32,7 @@ exports.signIn = {
     email: {
       type: 'string',
       required: true,
-      value: 'admin@domain.zone'
+      value: 'admin@example.com'
     },
     password: {
       type: 'string',

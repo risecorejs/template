@@ -1,31 +1,33 @@
 const jwt = require('jsonwebtoken')
-
-const { User } = require('models')
+const models = require('@risecorejs/core/models')
 
 module.exports = async (req, res, next) => {
-  const { authorization } = req.headers
-
-  if (!authorization) {
-    return res.status(401).json({ errors: { accessToken: 'required' } })
-  }
-
   try {
-    const { userId } = jwt.verify(authorization, $env('JWT_SECRET_KEY'))
+    if (!req.headers.authorization) {
+      throw { message: 'Access token was not passed in authorization field' }
+    }
 
-    const user = await User.scope('withoutPassword').findOne({
-      where: { id: userId }
+    const { userId } = jwt.verify(req.headers.authorization, $env('JWT_SECRET_KEY'))
+
+    const user = await models.User.scope('withoutPassword').findOne({
+      where: {
+        id: userId
+      }
     })
 
     if (!user) {
-      return res.status(401).json({ errors: { user: 'not_found' } })
+      throw { message: 'User not found' }
     }
 
     req.me = user
 
     next()
-  } catch (error) {
-    console.log(error)
+  } catch (err) {
+    const status = 401
 
-    return res.status(401).json({ errors: { accessToken: 'invalid' } })
+    return res.status(status).json({
+      status,
+      message: err.message
+    })
   }
 }

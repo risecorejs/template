@@ -1,4 +1,4 @@
-const { User } = require('@risecorejs/core/models')
+const models = require('@risecorejs/core/models')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
@@ -16,15 +16,19 @@ exports.signUp = async (req, res) => {
 
   const fields = req.only('email', 'password')
 
-  await User.create(fields)
+  const instance = await models.User.create(fields)
 
-  return res.sendStatus(201)
+  const user = instance.toJSON()
+
+  delete user.password
+
+  return res.status(201).json({ user })
 }
 
 // SIGN-IN
 exports.signIn = async (req, res) => {
   const errors = await req.validator({
-    email: 'required|email|find:user-email',
+    email: 'required|email',
     password: 'required|string'
   })
 
@@ -32,9 +36,15 @@ exports.signIn = async (req, res) => {
     return res.status(400).json({ errors })
   }
 
-  const user = await User.findOne({
-    where: { email: req.body.email }
+  const user = await models.User.findOne({
+    where: {
+      email: req.body.email
+    }
   })
+
+  if (!user) {
+    return res.sendStatus(401)
+  }
 
   const passwordMatch = await bcrypt.compare(req.body.password, user.password)
 

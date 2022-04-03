@@ -1,17 +1,19 @@
 // SHOW
 exports.show = {
+  private: true,
   description: 'Show me'
 }
 
 // UPDATE
 exports.update = {
+  private: true,
   description: 'Update me',
   bodyUI: true,
   body: {
     email: {
       type: 'string',
       required: 'ifExists',
-      value: 'me@domain.zone',
+      value: 'admin@example.com',
       description: 'Email must be unique'
     },
     password: {
