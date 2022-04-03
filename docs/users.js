@@ -28,7 +28,15 @@ exports.create = {
 // INDEX
 exports.index = {
   private: true,
-  description: 'Show users'
+  description: 'Show users with pagination',
+  params: {
+    page: {
+      value: 1
+    },
+    pageSize: {
+      value: 25
+    }
+  }
 }
 
 // SHOW
