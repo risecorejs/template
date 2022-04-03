@@ -1,6 +1,4 @@
-const bcrypt = require('bcryptjs')
-
-const { User } = require('models')
+const { User } = require('@risecorejs/core/models')
 
 // SHOW
 exports.show = async (req, res) => {
@@ -29,9 +27,13 @@ exports.update = async (req, res) => {
     return res.status(400).json({ errors })
   }
 
-  const data = req.only('email', 'password')
+  const fields = req.only('email', 'password')
 
-  await user.update(data)
+  if (fields) {
+  await user.update(fields)
 
-  return res.json({ success: true })
+  }
+
+
+  return res.end()
 }

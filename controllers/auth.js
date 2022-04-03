@@ -1,36 +1,35 @@
-const jwt = require('jsonwebtoken')
+const { User } = require('@risecorejs/core/models')
 const bcrypt = require('bcryptjs')
-
-const { User } = require('models')
+const jwt = require('jsonwebtoken')
 
 // SIGN-UP
 exports.signUp = async (req, res) => {
-  const validationErrors = await req.validator({
-    email: 'required|string|email|unique:user',
-    password: 'required|string|min:8',
-    passwordConfirm: 'as:password'
+  const errors = await req.validator({
+    email: 'required|email|max:200|unique:user',
+    password: 'required|string|between:8-200',
+    passwordConfirm: 'required|as:password'
   })
 
-  if (validationErrors) {
-    return res.status(400).json({ errors: validationErrors })
+  if (errors) {
+    return res.status(400).json({ errors })
   }
 
-  const userData = req.only('email', 'password')
+  const fields = req.only('email', 'password')
 
-  await User.create(userData)
+  await User.create(fields)
 
-  return res.status(201).json({ success: true })
+  return res.sendStatus(201)
 }
 
 // SIGN-IN
 exports.signIn = async (req, res) => {
-  const validationErrors = await req.validator({
-    email: 'required|string|email|find:user-email',
+  const errors = await req.validator({
+    email: 'required|email|find:user-email',
     password: 'required|string'
   })
 
-  if (validationErrors) {
-    return res.status(400).json({ errors: validationErrors })
+  if (errors) {
+    return res.status(400).json({ errors })
   }
 
   const user = await User.findOne({
@@ -40,7 +39,7 @@ exports.signIn = async (req, res) => {
   const passwordMatch = await bcrypt.compare(req.body.password, user.password)
 
   if (!passwordMatch) {
-    return res.status(401).json()
+    return res.sendStatus(401)
   }
 
   const accessToken = jwt.sign({ userId: user.id }, $env('JWT_SECRET_KEY'), {
