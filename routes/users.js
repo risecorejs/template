@@ -1,5 +1,4 @@
-const pagination = require('@risecorejs/middleware/lib/pagination')
-const paramsIsNotNaN = require('@risecorejs/middleware/lib/params-is-not-nan')
+const { pagination, paramsIsNotNaN } = require('@risecorejs/middleware')
 
 const access = require('../middleware/access')
 const docs = require('../docs/users')
