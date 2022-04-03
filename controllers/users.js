@@ -36,6 +36,11 @@ function create() {
 function index() {
   return {
     model: models.User.scope('withoutPassword'),
+    queryBuilder(req) {
+      return {
+        where: req.whereBuilder(['id', ['email', (val) => models.sequelize.literal(`LOWER("email") LIKE '%${val}%'`)]])
+      }
+    },
     response(users) {
       return { users }
     }
