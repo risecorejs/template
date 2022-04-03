@@ -32,7 +32,7 @@ function create() {
   }
 }
 
-// SHOW
+// INDEX
 function index() {
   return {
     model: models.User.scope('withoutPassword'),
