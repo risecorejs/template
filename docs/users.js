@@ -1,3 +1,5 @@
+const orderByUsers = require('../database/order-by/users')
+
 // CREATE
 exports.create = {
   private: true,
@@ -41,6 +43,12 @@ exports.index = {
     },
     email: {
       value: 'user@'
+    },
+    'order[]': {
+      value: Object.keys(orderByUsers.index()).join(' | ')
+    },
+    order: {
+      value: 'ASC | DESC'
     }
   }
 }

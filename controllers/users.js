@@ -1,5 +1,7 @@
 const models = require('@risecorejs/core/models')
 
+const orderByUsers = require('../database/order-by/users')
+
 const endpoints = $crudBuilder({
   model: 'User',
   endpoints: {
@@ -38,7 +40,8 @@ function index() {
     model: models.User.scope('withoutPassword'),
     queryBuilder(req) {
       return {
-        where: req.whereBuilder(['id', ['email', (val) => models.sequelize.literal(`LOWER("email") LIKE '%${val}%'`)]])
+        where: req.whereBuilder(['id', ['email', (val) => models.sequelize.literal(`LOWER("email") LIKE '%${val}%'`)]]),
+        order: req.orderBuilder(orderByUsers.index(), [['id', 'DESC']])
       }
     },
     response(users) {
