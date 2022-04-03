@@ -22,8 +22,8 @@
   "homepage": "https://github.com/risecorejs/risecorejs-template#readme",
   "dependencies": {
     "@risecorejs/core": "^2.2.0",
-    "@risecorejs/helpers": "^1.0.1",
-    "@risecorejs/middleware": "^1.0.1",
+    "@risecorejs/helpers": "^2.0.4",
+    "@risecorejs/middleware": "^1.0.2",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
