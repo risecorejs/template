@@ -19,7 +19,7 @@ Copy ".env.example" -> ".env" and add your private key to JWT_SECRET_KEY etc.
 
 `npm run dev` or `npm run start`
 
-## Directory Structure
+## Directory structure
 
 - controllers
 - database:
