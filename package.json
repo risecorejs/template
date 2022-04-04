@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Risecorejs template",
   "main": "config.js",
+  "private": true,
   "scripts": {
     "dev": "risecorejs dev",
     "start": "risecorejs start",
