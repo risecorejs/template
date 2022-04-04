@@ -1,7 +1,7 @@
 {
   "name": "risecorejs-template",
   "version": "1.0.0",
-  "description": "Risecorejs template",
+  "description": "Risecorejs - The Node.js Framework",
   "main": "config.js",
   "private": true,
   "scripts": {
